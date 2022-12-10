@@ -59,8 +59,10 @@ def move_stacks(stacks, procedures) -> dict[int, list[str]]:
         dict: Position of crates in stacks after moving
     """
     for procedure in procedures:
-        for i in range(procedure[0]):
-            stacks[procedure[2]].append(stacks[procedure[1]].pop())
+        # Extend target stack with end slice of source stack
+        stacks[procedure[2]].extend(stacks[procedure[1]][-(procedure[0]) :])
+        # Update source stack to omit end slice
+        stacks[procedure[1]] = stacks[procedure[1]][: -(procedure[0])]
     return stacks
 
 
