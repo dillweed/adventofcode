@@ -9,6 +9,9 @@ from collections import Counter
 # ls, if sub dirs, cd into next sub
 # else cd .., if more siblings, cd next sibling
 # else cd ..
+#
+# What algorithm should I use for 07a?
+# Looking like recursion for any ls that finds dirs.
 
 # Read input to list
 with open("07_input.txt") as file:
