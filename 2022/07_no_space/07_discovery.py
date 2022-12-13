@@ -16,7 +16,7 @@ from collections import Counter
 # Looking like recursion for any ls that finds dirs.
 
 # Read input to list
-with open("07_input_test.txt") as file:
+with open("07_input.txt") as file:
     raw_input_list = file.readlines()
 
 # Clean \n chars
@@ -54,21 +54,21 @@ print("files list len:", len(file_list))
 print("files set len:", len(set(file_list)))
 
 # Write list with indentation to see dir depth
-input_indented = ""
-indent = 0
-for line in input_list:
-    if line[:4] == "$ cd" and ".." not in line:
-        indent += 1
-        input_indented += (line) + "\n"
-    if line[:4] == "$ cd" and ".." in line:
-        indent -= 1
-        input_indented += (line) + "\n"
-    if line[:4] == "$ ls":
-        input_indented += (line) + "\n"
-    if line[0] == "d":
-        input_indented += ("    " * indent) + line + "\n"
-    if line[0].isdigit():
-        input_indented += ("    " * indent) + line + "\n"
+# input_indented = ""
+# indent = 0
+# for line in input_list:
+#     if line[:4] == "$ cd" and ".." not in line:
+#         indent += 1
+#         input_indented += (line) + "\n"
+#     if line[:4] == "$ cd" and ".." in line:
+#         indent -= 1
+#         input_indented += (line) + "\n"
+#     if line[:4] == "$ ls":
+#         input_indented += (line) + "\n"
+#     if line[0] == "d":
+#         input_indented += ("    " * indent) + line + "\n"
+#     if line[0].isdigit():
+#         input_indented += ("    " * indent) + line + "\n"
 
-with open("07_input_test_indented.txt", "w") as file:
-    file.write(input_indented)
+# with open("07_input_test_indented.txt", "w") as file:
+#     file.write(input_indented)
