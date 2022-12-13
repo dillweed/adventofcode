@@ -69,8 +69,6 @@ def sum_dirs(
             print(f"adding lower_dir_sums {lower_dir_sums} to local_sum {local_sum}")
             local_sum += lower_dir_sums
             print(f"new local_sum: {local_sum}")
-            # print(f"appending {local_sum} to local_sums list")
-            # local_sums.append(local_sum)
             end_ls = False
         if line[0].isdigit():  # file size detected
             local_sum += int(line.split()[0])
