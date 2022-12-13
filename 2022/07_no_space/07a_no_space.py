@@ -15,7 +15,7 @@ def main():
     # Init list_index for to track line
     list_index = 0
     # find sum of dirs
-    list_local_sum, list_index, sum = sum_dirs(input_list, list_index, limit, sum)
+    final_local_sum, list_index, sum = sum_dirs(input_list, list_index, limit, sum)
     print(f"end list_index: {list_index + 1}, dir sum under limit: {sum}")
 
 
