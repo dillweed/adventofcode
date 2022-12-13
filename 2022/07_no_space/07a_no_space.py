@@ -1,10 +1,5 @@
 """TBA."""
 
-# TODO sum_dirs is counting list indexes incorrectly.
-# A .. return from recursion reverts to an earlier index position
-# which repeats iteration over some lines. How to keep track and
-# avoid repeated iterations?
-
 
 def main():
     """TBA."""
@@ -64,8 +59,7 @@ def sum_dirs(
             local_sum += int(line.split()[0])
             print("local_sum:", local_sum)
 
-    # TODO Will lines below execute only at final dir ls?
-    print("END OF LOOP. local_sum", local_sum)
+    print("REACHED END OF LOOP. Unwinding. local_sum", local_sum)
     if local_sum <= limit:
         sum += local_sum
 
