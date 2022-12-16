@@ -9,7 +9,7 @@ def main():
     input_file = "08_input.txt"
     # Load input string as 2d array
     trees = load_input_file(input_file)
-    [print(*row) for row in trees]
+    # [print(*row) for row in trees]
     high_score = score(trees)
 
     print("Highest score tree:", high_score)
@@ -26,12 +26,8 @@ def score(trees) -> int:
                 tree_dict[i, j]
             except:
                 tree_dict[i, j] = []  # Init key with empty list
-                print("adding [] for", i, j)
-            print("calling forward for", i, j)
             tree_dict[i, j].append(view_distance_forward(j, row))
-            print("calling behind for", i, j)
             tree_dict[i, j].append(view_distance_behind(j, row))
-            print("row i:", i, "row n:", row[j], row, tree_dict[i, j], "\n")
 
     # Check vertical tree visibility
     for col_index in range(len(trees[0])):
@@ -41,11 +37,8 @@ def score(trees) -> int:
         for i in range(len(col)):
             tree_dict[i, col_index].append(view_distance_forward(i, col))
             tree_dict[i, col_index].append(view_distance_behind(i, col))
-            print("col i:", i, "col n:", col[i], col, tree_dict[i, col_index], "\n")
 
-    print(tree_dict)
     scores = [reduce((lambda x, y: x * y), tree) for tree in tree_dict.values()]
-    print(scores)
     high_score = max(scores)
     return high_score
 
@@ -53,52 +46,28 @@ def score(trees) -> int:
 def view_distance_forward(house_i, line) -> int:
     distance = 0
     offset = -1
-    print("forward called with", house_i, line)
     for view_i in range(house_i + 1, len(line)):
-        print(
-            "subloop forward",
-            "house n:",
-            line[house_i],
-            "view_i:",
-            view_i,
-            "view n:",
-            line[view_i],
-        )
         if line[view_i] >= line[house_i]:
             offset = view_i - house_i
-            print("offset", offset)
             break
     if offset == -1:  # no trees >= found
         distance = len(line) - 1 - house_i
     else:
         distance = offset
-    print("returning distance:", distance)
     return distance
 
 
 def view_distance_behind(house_i, line) -> int:
     distance = 0
     offset = -1
-    print("behind called with", house_i, line)
     for view_i in range(house_i - 1, -1, -1):
-        print(
-            "subloop behind",
-            "house n:",
-            line[house_i],
-            "view_i:",
-            view_i,
-            "view n:",
-            line[view_i],
-        )
         if line[view_i] >= line[house_i]:
             offset = house_i - view_i
-            print("offset", offset)
             break
     if offset == -1:  # no trees >= found
         distance = house_i
     else:
         distance = offset
-    print("returning distance:", distance)
     return distance
 
 
