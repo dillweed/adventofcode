@@ -10,6 +10,8 @@ def main():
     forest = load_forest(input_file)
     max_x = max([tree._x for tree in forest.values()])
     max_y = max([tree._y for tree in forest.values()])
+    print(forest[2, 2] <= forest[1, 2])
+    print(forest[2, 2].height, forest[1, 2].height)
 
     print("Visible trees:", sum([tree.visible for tree in forest.values()]))
 
@@ -47,18 +49,21 @@ def load_forest(input_file) -> dict:
     return forest
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, order=True)
 class Tree:
-    _x: int
-    _y: int
-    height: int
-    list_i: int
+    _x: int = field(compare=False)
+    _y: int = field(compare=False)
+    height: int = field(compare=True)
+    list_i: int = field(compare=False)
     edge: bool = False
     view: list[int] = field(default_factory=list)
-    visible: bool = False
+    visible: bool = True
 
     def set_visible(self):
         object.__setattr__(self, "visible", True)
+
+    # def __ge__(self, other):
+    #     return self.height >= other.height
 
 
 def load_input_file(input_file) -> list[list[int]]:
