@@ -1,6 +1,9 @@
 from pprint import pprint
+import time
+import Grapher
 
 """TBA."""
+# TODO find bug IndexError: list index out of range
 # Per instructions:
 # If the head is ever two steps directly up, down, left, or right from the tail,
 # the tail must also move one step in that direction so it remains close enough.
@@ -15,43 +18,43 @@ def main():
     # Load input string as list
     motions = load_input_file(input_file)
     # Display motion list
-    # pprint(motions, width=10)
+    pprint(motions, width=10)
     # Process motion list
-    visited = move(motions)
-    # pprint(visited, width=10)
+    visited_T = move(motions)
+    pprint(visited_T, width=10)
     # How many unique xy coordinates did tail visit?
-    print(f"Positions tail visited: {len(set(visited))}")
-
-    # Get values for Grapher
-    x_visited = []
-    y_visited = []
-    for xy in visited:
-        x_visited.append(xy[0])
-        y_visited.append(xy[1])
-    min_x = min(x_visited)
-    max_x = max(x_visited)
-    min_y = min(y_visited)
-    max_y = max(y_visited)
-    height = max_y - min_y
-    width = max_x - min_x
-    init_x = abs(min_x)  # X start position from left edge
-    init_y = abs(min_y)  # Y start position from bottom edge
-    print(f"min x: {min_x} max x: {max_x}")
-    print(f"min y: {min_y} max y: {max_y}")
-    print(f"height: {height} width: {width} init_x: {init_x} init_y: {init_y}")
+    print(len(set(visited_T)))
 
 
 def move(motions: list[tuple]) -> list:
-    visited: list[tuple[int, int]] = []  # Coords visited by tail
+    visited_T: list[tuple[int, int]] = []  # Coords visited by tail
+    visited_H: list[tuple[int, int]] = []  # Coords visited by head
     head = (0, 0)  # Head x, y coordinate start
     tail = (0, 0)  # Tail x, y coordinate start
-    visited.append(head)  # Record first position
+    visited_H.append(head)  # Record first position
+    visited_T.append(tail)  # Record first position
+    graph = Grapher.Grapher(346, 303, 118, 279)  # Dimensions for 09a
+    # graph = Grapher.Grapher(21, 26, 11, 5) # Dimensions for 09b test
+    graph.set(0, 0, "S")  # Start 0,0
+    with open("graph.txt", "w") as graph_file:
+        graph_file.write(graph.display())
     for motion in motions:
         for _ in range(motion[1]):
             head = lead(motion[0], head)
             tail = follow(head, tail)
-            visited.append(tail)
-    return visited
+            graph.set(*visited_H[-1], ".")
+            # graph.set(*visited_T[-1], ".")
+            [graph.set(*xy, "#") for xy in set(visited_T)]
+            graph.set(*head, "H")
+            graph.set(*tail, "T")
+            graph.set(0, 0, "S")
+            with open("graph.txt", "w") as graph_file:
+                graph_file.write(graph.display())
+            visited_H.append(head)
+            visited_T.append(tail)
+            time.sleep(0.1)
+            # __ = input(f"Motion: {motion} {_+1} of {motion[1]}. Enter to continue: ")
+    return visited_T
 
 
 def lead(direction, head: tuple[int, int]) -> tuple[int, int]:
