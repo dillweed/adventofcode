@@ -45,7 +45,7 @@ def move(motions: list[tuple]) -> list:
     visited: list[tuple[int, int]] = []  # Coords visited by tail
     head = (0, 0)  # Head x, y coordinate start
     tail = (0, 0)  # Tail x, y coordinate start
-    visited.append(head)  # Record first position
+    visited.append(tail)  # Record first position
     for motion in motions:
         for _ in range(motion[1]):
             head = lead(motion[0], head)

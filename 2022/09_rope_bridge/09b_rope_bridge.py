@@ -8,7 +8,7 @@ import logger
 def main():
     """TBA."""
     # Define input filename
-    input_file = "09_input_testb.txt"
+    input_file = "09_input.txt"
     # Load input string as list
     motions = load_input_file(input_file)
     # Display motion list
@@ -39,16 +39,20 @@ def move(motions: list[tuple], rope) -> list:
             visited.append(rope[len(rope.keys())])  # Record all coords of tail
     return visited
 
+# Follow was updated from 09a. Longer rope intruduces "leaps" which change the path
+
 
 def follow(leader: tuple[int, int], follower: tuple[int, int]) -> tuple[int, int]:
     diff_x = leader[0] - follower[0]
     diff_y = leader[1] - follower[1]
-    # follower should always fall in xy line with leader and never drag along diagonally.
-    # Assign the smaller leader axis to follower and half of the larger follower diff.
-    if abs(diff_x) > 1:  # follower is 2 away on x axis
-        return (follower[0] + diff_x // 2, leader[1])
-    if abs(diff_y) > 1:  # follower is 2 away on y axis
-        return (leader[0], follower[1] + diff_y // 2)
+    if abs(diff_x) > 1 and diff_y == 0:  # follower is 2 away on x axis and on same y
+        return (follower[0] + ((diff_x > 0) - (diff_x < 0)), follower[1])
+    if abs(diff_y) > 1 and diff_x == 0:  # follower is 2 away on y axis and on same x
+        return (follower[0], follower[1] + ((diff_y > 0) - (diff_y < 0)))
+    # If x is 2 away and y is 1 away OR if x is 1 away and y is 2 away
+    if (abs(diff_x) > 1 and abs(diff_y) >= 1) or (abs(diff_x) >= 1 and abs(diff_y) > 1):
+        # Move diagonally towards the leader
+        return (follower[0] + ((diff_x > 0) - (diff_x < 0)), follower[1] + ((diff_y > 0) - (diff_y < 0)))
     return follower  # leader and follower are adjacent. No movement required.
 
 
