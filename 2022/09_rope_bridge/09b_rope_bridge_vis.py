@@ -1,6 +1,8 @@
 from pprint import pprint
 from collections import defaultdict
+import time
 import logger
+import Grapher
 
 """TBA."""
 
@@ -8,7 +10,7 @@ import logger
 def main():
     """TBA."""
     # Define input filename
-    input_file = "09_input_testb.txt"
+    input_file = "09_input.txt"
     # Load input string as list
     motions = load_input_file(input_file)
     # Display motion list
@@ -18,42 +20,92 @@ def main():
     rope = defaultdict(lambda: (0, 0))
     [rope[i] for i in range(1, 10)]
     # Process motion list
-    visited = move(motions, rope)
+    visited_T, visited_H = move(motions, rope)
     # How many unique xy coordinates did tail visit?
-    print(len(set(visited)))
+    # print("All head positions")
+    # pprint(visited_H)
+    # print("All tail positions")
+    # pprint(visited_T)
+    # get_grapher_values(visited_H)
+    print("Unique tail positions", len(set(visited_T)))
+
+
+def get_grapher_values(visited):
+    # Get values for Grapher
+    x_visited = []
+    y_visited = []
+    for xy in visited:
+        x_visited.append(xy[0])
+        y_visited.append(xy[1])
+    min_x = min(x_visited)
+    max_x = max(x_visited)
+    min_y = min(y_visited)
+    max_y = max(y_visited)
+    height = max_y - min_y + 1  # Add 1 for zero indexing
+    width = max_x - min_x + 1  # Add 1 for zero indexing
+    init_x = abs(min_x)  # X start position from left edge
+    init_y = abs(min_y)  # Y start position from bottom edge
+    print(f"min x: {min_x} max x: {max_x}")
+    print(f"min y: {min_y} max y: {max_y}")
+    print(f"height={height}, width={width}, init_x={init_x}, init_y={init_y}")
 
 
 def move(motions: list[tuple], rope) -> list:
-    visited = []  # Coords visited by tail
+    visited_T = []  # Coords visited by tail
+    visited_H = []  # Coords visited by head
     head = (0, 0)  # Head x, y coordinate start
+    tail = (0, 0)  # Tail x, y coordinate start
+    visited_H.append(head)  # Record first position
+    visited_T.append(tail)  # Record first position
+    graph = Grapher.Grapher(height=348, width=305,
+                            init_x=119, init_y=280)  # Dimensions 09b
+    # graph = Grapher.Grapher(21, 26, 11, 5)  # Dimensions of 09b test
+    # graph = Grapher.Grapher(5, 6, 0, 0)  # Dimensions of 09a test
+    graph.set(0, 0, "S")  # Start 0,0
+    with open("graph.txt", "w") as graph_file:
+        graph_file.write(graph.display())
     for motion in motions:
         for _ in range(motion[1]):
             head = lead(motion[0], head)
+            graph.set(0, 0, "S")
+            graph.set(*visited_H[-1], ".")
+            visited_H.append(head)
+            graph.set(*head, "H")
             leader = head
             logger.log.info("motion: %s \niter: %s head: %s", motion, _, head)
             # Iterate through rope to let each knot follow the leader
             for key in rope.keys():
+                graph.set(*rope[key], ".")
                 rope[key] = follow(leader, rope[key])
+                graph.set(*rope[key], key)
                 leader = rope[key]
                 # logger.log.info("key: %s, value: %s", key, rope[key])
-                vis(head, rope)
-            visited.append(rope[len(rope.keys())])  # Record all coords of tail
-    return visited
+            # Record all coords of tail
+            visited_T.append(rope[len(rope.keys())])
+            # time.sleep(.3)
+            # with open("graph.txt", "w") as graph_file:
+            # graph_file.write(graph.display())
+            # __ = input(
+            #     f"Motion: {motion} {_+1} of {motion[1]}. Enter to continue: ")
+    [graph.set(*xy, "#") for xy in set(visited_T)]
+    with open("graph.txt", "w") as graph_file:
+        graph_file.write(graph.display())
+    return visited_T, visited_H
 
-
-def vis(head, rope):
-    print("visualizer")
+# Follow was updated from 09a. Longer rope intruduces "leaps" which change the path
 
 
 def follow(leader: tuple[int, int], follower: tuple[int, int]) -> tuple[int, int]:
     diff_x = leader[0] - follower[0]
     diff_y = leader[1] - follower[1]
-    # follower should always fall in xy line with leader and never drag along diagonally.
-    # Assign the smaller leader axis to follower and half of the larger follower diff.
-    if abs(diff_x) > 1:  # follower is 2 away on x axis
-        return (follower[0] + diff_x // 2, leader[1])
-    if abs(diff_y) > 1:  # follower is 2 away on y axis
-        return (leader[0], follower[1] + diff_y // 2)
+    if abs(diff_x) > 1 and diff_y == 0:  # follower is 2 away on x axis and on same y
+        return (follower[0] + ((diff_x > 0) - (diff_x < 0)), follower[1])
+    if abs(diff_y) > 1 and diff_x == 0:  # follower is 2 away on y axis and on same x
+        return (follower[0], follower[1] + ((diff_y > 0) - (diff_y < 0)))
+    # If x is 2 away and y is 1 away OR if x is 1 away and y is 2 away
+    if (abs(diff_x) > 1 and abs(diff_y) >= 1) or (abs(diff_x) >= 1 and abs(diff_y) > 1):
+        # Move diagonally towards the leader
+        return (follower[0] + ((diff_x > 0) - (diff_x < 0)), follower[1] + ((diff_y > 0) - (diff_y < 0)))
     return follower  # leader and follower are adjacent. No movement required.
 
 
