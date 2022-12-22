@@ -5,12 +5,17 @@ import logger
 import Grapher
 
 """TBA."""
+# Per instructions:
+# If the head is ever two steps directly up, down, left, or right from the tail,
+# the tail must also move one step in that direction so it remains close enough.
+# Otherwise, if the head and tail aren't touching and aren't in the same row or
+# column, the tail always moves one step diagonally to keep up.
 
 
 def main():
     """TBA."""
     # Define input filename
-    input_file = "09_input.txt"
+    input_file = "09_input_testb.txt"
     # Load input string as list
     motions = load_input_file(input_file)
     # Display motion list
@@ -57,9 +62,8 @@ def move(motions: list[tuple], rope) -> list:
     tail = (0, 0)  # Tail x, y coordinate start
     visited_H.append(head)  # Record first position
     visited_T.append(tail)  # Record first position
-    graph = Grapher.Grapher(height=348, width=305,
-                            init_x=119, init_y=280)  # Dimensions 09b
-    # graph = Grapher.Grapher(21, 26, 11, 5)  # Dimensions of 09b test
+    # graph = Grapher.Grapher(348, 305, 119, 280)  # Dimensions 09b
+    graph = Grapher.Grapher(21, 26, 11, 5)  # Dimensions of 09b test
     # graph = Grapher.Grapher(5, 6, 0, 0)  # Dimensions of 09a test
     graph.set(0, 0, "S")  # Start 0,0
     with open("graph.txt", "w") as graph_file:
@@ -82,17 +86,15 @@ def move(motions: list[tuple], rope) -> list:
                 # logger.log.info("key: %s, value: %s", key, rope[key])
             # Record all coords of tail
             visited_T.append(rope[len(rope.keys())])
-            # time.sleep(.3)
-            # with open("graph.txt", "w") as graph_file:
-            # graph_file.write(graph.display())
+            time.sleep(.3)
+            with open("graph.txt", "w") as graph_file:
+                graph_file.write(graph.display())
             # __ = input(
-            #     f"Motion: {motion} {_+1} of {motion[1]}. Enter to continue: ")
+                # f"Motion: {motion} {_+1} of {motion[1]}. Enter to continue: ")
     [graph.set(*xy, "#") for xy in set(visited_T)]
     with open("graph.txt", "w") as graph_file:
         graph_file.write(graph.display())
     return visited_T, visited_H
-
-# Follow was updated from 09a. Longer rope intruduces "leaps" which change the path
 
 
 def follow(leader: tuple[int, int], follower: tuple[int, int]) -> tuple[int, int]:

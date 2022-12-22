@@ -22,24 +22,6 @@ def main():
     # How many unique xy coordinates did tail visit?
     print(f"Positions tail visited: {len(set(visited))}")
 
-    # Get values for Grapher
-    x_visited = []
-    y_visited = []
-    for xy in visited:
-        x_visited.append(xy[0])
-        y_visited.append(xy[1])
-    min_x = min(x_visited)
-    max_x = max(x_visited)
-    min_y = min(y_visited)
-    max_y = max(y_visited)
-    height = max_y - min_y
-    width = max_x - min_x
-    init_x = abs(min_x)  # X start position from left edge
-    init_y = abs(min_y)  # Y start position from bottom edge
-    print(f"min x: {min_x} max x: {max_x}")
-    print(f"min y: {min_y} max y: {max_y}")
-    print(f"height: {height} width: {width} init_x: {init_x} init_y: {init_y}")
-
 
 def move(motions: list[tuple]) -> list:
     visited: list[tuple[int, int]] = []  # Coords visited by tail
@@ -66,16 +48,18 @@ def lead(direction, head: tuple[int, int]) -> tuple[int, int]:
     return head
 
 
-def follow(head: tuple[int, int], tail: tuple[int, int]) -> tuple[int, int]:
-    diff_x = head[0] - tail[0]
-    diff_y = head[1] - tail[1]
-    # tail should always fall in xy line with head and never drag along diagonally.
-    # Assign the smaller head axis to tail and half of the larger tail diff.
-    if abs(diff_x) > 1:  # tail is 2 away on x axis
-        return (tail[0] + diff_x // 2, head[1])
-    if abs(diff_y) > 1:  # tail is 2 away on y axis
-        return (head[0], tail[1] + diff_y // 2)
-    return tail  # head and tail are adjacent. No movement required.
+def follow(leader: tuple[int, int], follower: tuple[int, int]) -> tuple[int, int]:
+    diff_x = leader[0] - follower[0]
+    diff_y = leader[1] - follower[1]
+    if abs(diff_x) > 1 and diff_y == 0:  # follower is 2 away on x axis and on same y
+        return (follower[0] + ((diff_x > 0) - (diff_x < 0)), follower[1])
+    if abs(diff_y) > 1 and diff_x == 0:  # follower is 2 away on y axis and on same x
+        return (follower[0], follower[1] + ((diff_y > 0) - (diff_y < 0)))
+    # If x is 2 away and y is 1 away OR if x is 1 away and y is 2 away
+    if (abs(diff_x) > 1 and abs(diff_y) >= 1) or (abs(diff_x) >= 1 and abs(diff_y) > 1):
+        # Move diagonally towards the leader
+        return (follower[0] + ((diff_x > 0) - (diff_x < 0)), follower[1] + ((diff_y > 0) - (diff_y < 0)))
+    return follower  # leader and follower are adjacent. No movement required.
 
 
 def load_input_file(input_file) -> list:
