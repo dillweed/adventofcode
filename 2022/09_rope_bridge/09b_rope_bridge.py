@@ -39,10 +39,9 @@ def move(motions: list[tuple], rope) -> list:
             visited.append(rope[len(rope.keys())])  # Record all coords of tail
     return visited
 
-# Follow was updated from 09a. Longer rope intruduces "leaps" which change the path
-
 
 def follow(leader: tuple[int, int], follower: tuple[int, int]) -> tuple[int, int]:
+    """Follow was updated from 09a. Longer rope intruduces "leaps" which change the path"""
     diff_x = leader[0] - follower[0]
     diff_y = leader[1] - follower[1]
     if abs(diff_x) > 1 and diff_y == 0:  # follower is 2 away on x axis and on same y
