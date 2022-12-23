@@ -1,5 +1,5 @@
 from pprint import pprint
-"""TBA."""
+"""Process signal input to find answer to 10a."""
 
 
 def main():
@@ -36,26 +36,6 @@ def process_signal(signal):
             pending = item
 
     return cycles
-
-
-# def process_signal(signal):
-#     cycles = [1]
-#     last_item = 0
-#     for item in signal:
-#         last_item = item
-#         if item == None:
-#             if last_item != None:
-#                 cycles.append(cycles[-1] + last_item)
-#                 break
-#             cycles.append(cycles[-1])
-#         else:
-#             if last_item != None:
-#                 cycles.append(cycles[-1] + last_item)
-#                 cycles.append(cycles[-1])
-#                 break
-#             cycles.append(cycles[-1])
-#             cycles.append(cycles[-1])
-#     return cycles
 
 
 def query_cycles(cycles, start, interval):

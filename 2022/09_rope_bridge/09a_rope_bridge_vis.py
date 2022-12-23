@@ -54,18 +54,18 @@ def move(motions: list[tuple]) -> list:
     visited_H.append(head)  # Record first position
     visited_T.append(tail)  # Record first position
     graph = Grapher.Grapher(348, 305, 119, 280)  # Dimensions for 09a
-    graph.set(0, 0, "S")  # Start 0,0
+    graph.set_value(0, 0, "S")  # Start 0,0
     with open("graph.txt", "w") as graph_file:
         graph_file.write(graph.display())
     for motion in motions:
         for _ in range(motion[1]):
             head = lead(motion[0], head)
             tail = follow(head, tail)
-            graph.set(*visited_H[-1], ".")
-            graph.set(*visited_T[-1], ".")
-            graph.set(*head, "H")
-            graph.set(*tail, "T")
-            graph.set(0, 0, "S")
+            graph.set_value(*visited_H[-1], ".")
+            graph.set_value(*visited_T[-1], ".")
+            graph.set_value(*head, "H")
+            graph.set_value(*tail, "T")
+            graph.set_value(0, 0, "S")
             # with open("graph.txt", "w") as graph_file:
             #     graph_file.write(graph.display())
             visited_H.append(head)
@@ -73,8 +73,8 @@ def move(motions: list[tuple]) -> list:
             # time.sleep(0.1)
             # __ = input(f"Motion: {motion} {_+1} of {motion[1]}. Enter to
             # continue: ")
-    [graph.set(*xy, "#") for xy in set(visited_T)]
-    graph.set(*tail, "T")
+    [graph.set_value(*xy, "#") for xy in set(visited_T)]
+    graph.set_value(*tail, "T")
     with open("graph.txt", "w") as graph_file:
         graph_file.write(graph.display())
     return visited_T, visited_H

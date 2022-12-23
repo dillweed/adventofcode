@@ -65,23 +65,23 @@ def move(motions: list[tuple], rope) -> list:
     # graph = Grapher.Grapher(348, 305, 119, 280)  # Dimensions 09b
     graph = Grapher.Grapher(21, 26, 11, 5)  # Dimensions of 09b test
     # graph = Grapher.Grapher(5, 6, 0, 0)  # Dimensions of 09a test
-    graph.set(0, 0, "S")  # Start 0,0
+    graph.set_value(0, 0, "S")  # Start 0,0
     with open("graph.txt", "w") as graph_file:
         graph_file.write(graph.display())
     for motion in motions:
         for _ in range(motion[1]):
             head = lead(motion[0], head)
-            graph.set(0, 0, "S")
-            graph.set(*visited_H[-1], ".")
+            graph.set_value(0, 0, "S")
+            graph.set_value(*visited_H[-1], ".")
             visited_H.append(head)
-            graph.set(*head, "H")
+            graph.set_value(*head, "H")
             leader = head
             logger.log.info("motion: %s \niter: %s head: %s", motion, _, head)
             # Iterate through rope to let each knot follow the leader
             for key in rope.keys():
-                graph.set(*rope[key], ".")
+                graph.set_value(*rope[key], ".")
                 rope[key] = follow(leader, rope[key])
-                graph.set(*rope[key], key)
+                graph.set_value(*rope[key], key)
                 leader = rope[key]
                 # logger.log.info("key: %s, value: %s", key, rope[key])
             # Record all coords of tail
@@ -91,7 +91,7 @@ def move(motions: list[tuple], rope) -> list:
                 graph_file.write(graph.display())
             # __ = input(
                 # f"Motion: {motion} {_+1} of {motion[1]}. Enter to continue: ")
-    [graph.set(*xy, "#") for xy in set(visited_T)]
+    [graph.set_value(*xy, "#") for xy in set(visited_T)]
     with open("graph.txt", "w") as graph_file:
         graph_file.write(graph.display())
     return visited_T, visited_H
