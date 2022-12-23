@@ -1,0 +1,13 @@
+addx 15
+addx -11
+addx 6
+
+cycles
+1: x is 1, add 15 on 3
+2: x is 1, pending 15
+3: x is 16, add -11 on 5
+4: x is 16, pending -11
+5: x is 5, add 6 on 7
+6: x is 5, pending 6
+7: x is 11, ...
+
