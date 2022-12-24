@@ -1,6 +1,6 @@
 from pprint import pprint
 import time
-import Grapher
+from grapher import Grapher
 
 """TBA."""
 # Per instructions:
@@ -53,7 +53,7 @@ def move(motions: list[tuple]) -> list:
     tail = (0, 0)  # Tail x, y coordinate start
     visited_H.append(head)  # Record first position
     visited_T.append(tail)  # Record first position
-    graph = Grapher.Grapher(348, 305, 119, 280)  # Dimensions for 09a
+    graph = Grapher(348, 305, 119, 280)  # Dimensions for 09a
     graph.set_value(0, 0, "S")  # Start 0,0
     with open("graph.txt", "w") as graph_file:
         graph_file.write(graph.display())

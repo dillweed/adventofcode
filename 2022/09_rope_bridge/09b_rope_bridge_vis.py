@@ -2,7 +2,7 @@ from pprint import pprint
 from collections import defaultdict
 import time
 import logger
-import Grapher
+from grapher import Grapher
 
 """TBA."""
 # Per instructions:
@@ -15,7 +15,7 @@ import Grapher
 def main():
     """TBA."""
     # Define input filename
-    input_file = "09_input_testb.txt"
+    input_file = "09_input.txt"
     # Load input string as list
     motions = load_input_file(input_file)
     # Display motion list
@@ -62,9 +62,9 @@ def move(motions: list[tuple], rope) -> list:
     tail = (0, 0)  # Tail x, y coordinate start
     visited_H.append(head)  # Record first position
     visited_T.append(tail)  # Record first position
-    # graph = Grapher.Grapher(348, 305, 119, 280)  # Dimensions 09b
-    graph = Grapher.Grapher(21, 26, 11, 5)  # Dimensions of 09b test
-    # graph = Grapher.Grapher(5, 6, 0, 0)  # Dimensions of 09a test
+    graph = Grapher(348, 305, 119, 280)  # Dimensions 09b
+    # graph = Grapher(21, 26, 11, 5)  # Dimensions of 09b test
+    # graph = Grapher(5, 6, 0, 0)  # Dimensions of 09a test
     graph.set_value(0, 0, "S")  # Start 0,0
     with open("graph.txt", "w") as graph_file:
         graph_file.write(graph.display())
@@ -86,11 +86,11 @@ def move(motions: list[tuple], rope) -> list:
                 # logger.log.info("key: %s, value: %s", key, rope[key])
             # Record all coords of tail
             visited_T.append(rope[len(rope.keys())])
-            time.sleep(.3)
-            with open("graph.txt", "w") as graph_file:
-                graph_file.write(graph.display())
+            # time.sleep(.3)
+            # with open("graph.txt", "w") as graph_file:
+            #     graph_file.write(graph.display())
             # __ = input(
-                # f"Motion: {motion} {_+1} of {motion[1]}. Enter to continue: ")
+            # f"Motion: {motion} {_+1} of {motion[1]}. Enter to continue: ")
     [graph.set_value(*xy, "#") for xy in set(visited_T)]
     with open("graph.txt", "w") as graph_file:
         graph_file.write(graph.display())
