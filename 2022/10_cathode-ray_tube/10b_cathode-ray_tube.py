@@ -6,21 +6,23 @@ from grapher import Grapher
 
 def main():
     """TBA."""
-    height = 6
     width = 40
-    graph = Grapher(height, width)
-    print(graph.display())
+    height = 6
+    graph = Grapher(width, height, fill=" ")
     # Define input filename
-    input_file = "10_input_test.txt"
+    input_file = "10_input.txt"
     # Load input string as list
     signal = load_input_file(input_file)
     cycles = process_signal(signal)
-    i_cycles = list((i, cycle) for i, cycle in enumerate(cycles))
-    for i in range(len(i_cycles) - 1):
-        print(i, i_cycles[i])
-        # TODO verify separation of rows. Should be 0 through 39 each.
-        # TODO also verify if statement for valid -m+ values
-        # If rows are correct, the issue may be in process_signal.
+    # Had to drop the first cycle to get the right output
+    i_cycles = list((i, cycle) for i, cycle in enumerate(cycles[1:]))
+    for i in range(len(i_cycles)):  # drop the last cycle
+        # This print verifies line segment indexes and sprite window values
+        # compared to cycle index
+        # print(
+        #     f"i: {i_cycles[i][0] - (width * (i_cycles[i][0] // width))} in range({i_cycles[i][1] - 1} to {i_cycles[i][1] + 2}) for v: {i_cycles[i][1]}"
+        # )
+
         if i_cycles[i][0] - (width * (i_cycles[i][0] // width)) in range(
             i_cycles[i][1] - 1, i_cycles[i][1] + 2
         ):
@@ -29,7 +31,6 @@ def main():
                 height - (i_cycles[i][0] // width + 1),
                 "#",
             )
-            print(graph.display())
     print(graph.display())
 
 
