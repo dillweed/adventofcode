@@ -62,9 +62,9 @@ def move(motions: list[tuple], rope) -> list:
     tail = (0, 0)  # Tail x, y coordinate start
     visited_H.append(head)  # Record first position
     visited_T.append(tail)  # Record first position
-    graph = Grapher(348, 305, 119, 280)  # Dimensions 09b
-    # graph = Grapher(21, 26, 11, 5)  # Dimensions of 09b test
-    # graph = Grapher(5, 6, 0, 0)  # Dimensions of 09a test
+    graph = Grapher(305, 348, 119, 280)  # Dimensions 09b
+    # graph = Grapher(26, 21, 11, 5)  # Dimensions of 09b test
+    # graph = Grapher(6, 5, 0, 0)  # Dimensions of 09a test
     graph.set_value(0, 0, "S")  # Start 0,0
     with open("graph.txt", "w") as graph_file:
         graph_file.write(graph.display())
@@ -107,7 +107,10 @@ def follow(leader: tuple[int, int], follower: tuple[int, int]) -> tuple[int, int
     # If x is 2 away and y is 1 away OR if x is 1 away and y is 2 away
     if (abs(diff_x) > 1 and abs(diff_y) >= 1) or (abs(diff_x) >= 1 and abs(diff_y) > 1):
         # Move diagonally towards the leader
-        return (follower[0] + ((diff_x > 0) - (diff_x < 0)), follower[1] + ((diff_y > 0) - (diff_y < 0)))
+        return (
+            follower[0] + ((diff_x > 0) - (diff_x < 0)),
+            follower[1] + ((diff_y > 0) - (diff_y < 0)),
+        )
     return follower  # leader and follower are adjacent. No movement required.
 
 
