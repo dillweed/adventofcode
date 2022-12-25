@@ -35,20 +35,13 @@ def main():
 
 
 def process_signal(signal):
-    cycles = [1]
-    target_cycle = 0
-    pending = 0
+    total = 1
+    cycles = [1, 1]  # Not sure why I have to pad this list
     for item in signal:
-        current_cycle = len(cycles)
-        if current_cycle == target_cycle:
-            cycles.append(cycles[-1] + pending)
-        else:
-            cycles.append(cycles[-1])
-        if item != None:  # Found an int
-            cycles.append(cycles[-1])
-            target_cycle = len(cycles)
-            pending = item
-
+        cycles.append((total))
+        if item != None:
+            total += int(item)
+            cycles.append((total))
     return cycles
 
 
