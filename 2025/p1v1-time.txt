@@ -1,0 +1,2 @@
+Zero Dial Counter = 992
+./p1.zsh  0.05s user 0.04s system 93% cpu 0.092 total
