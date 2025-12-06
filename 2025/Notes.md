@@ -1,4 +1,4 @@
-# Notes
+# Part 1
 
 Okay, this is my stream of consciousness notes for Day One - Secret Entrance. The problem is that I need to find the lock number. It's a single number, an integer, that is the number of times that the dial lands on zero. So I need to create a counter for those instances and increment it each time. This will output the answer to the problem. 
 
@@ -10,3 +10,8 @@ So I will list here the components needed for this script.
 - line by line input parser for L/R directionality and increment/decrement dial count. Example: R20, R1, L22, R0
 - 0-99 dial component with a crossover in both directions
 - 0 dial position counter that increments dial-counter var
+
+# Part 2
+
+- zero crossings can happen multiple times per rotation
+- include landing on zero as before
