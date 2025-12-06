@@ -8,7 +8,9 @@ def main():
     """TBA."""
     width = 40
     height = 6
-    graph = Grapher(width, height, fill=" ")
+    fill = "🎄"
+    lettering = "🎁"
+    graph = Grapher(width, height, fill=fill)
     # Define input filename
     input_file = "10_input.txt"
     # Load input string as list
@@ -29,7 +31,7 @@ def main():
             graph.set_value(
                 i_cycles[i][0] - (width * (i_cycles[i][0] // width)),
                 height - (i_cycles[i][0] // width + 1),
-                "░",
+                lettering,
             )
     print(graph.display())
 
