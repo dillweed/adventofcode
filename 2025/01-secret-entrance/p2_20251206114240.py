@@ -11,10 +11,17 @@ def solve(path: str) -> int:
                 continue
             dir_, num = line[0], int(line[1:])
             step = -num if dir_ == "L" else num
-            dial = (dial + step) % 100
-            if dial == 0:
-                zeros += 1
-    return zeros
+            if step < 0:
+                for _ in range(abs(step)):
+                    dial -= 1
+                    dial = dial%100
+                    zeros += (dial == 0)
+            else:
+                for _ in range(step):
+                    dial += 1
+                    dial = dial%100
+                    zeros += (dial == 0)
+        return zeros
 
 
 def main(argv: list[str]) -> None:

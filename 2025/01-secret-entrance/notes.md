@@ -13,5 +13,44 @@ So I will list here the components needed for this script.
 
 # Part 2
 
-- zero crossings can happen multiple times per rotation
-- include landing on zero as before
+- Zero crossings can happen multiple times per rotation
+- Include landing on zero as before
+- If dial is 55 and input is 40, the difference between 55 and 100 is 45 which is greater than the input. If dial is 55 and input is 400, 45 is less than input. Take 45 from 400 (=355) and divide 355 by 100 (=3 remainder 55)
+
+# Solve for positive steps
+
+```python
+dial=30
+step=69
+
+if step >= 0: # Righthand direction
+    zeros += int((dial+step)/100)
+else # Lefthand direction
+    zeros += # Getting stuck here
+
+dial=(dial+step)%100
+```
+
+# Solve by incremental checks
+
+```python
+def solve(path: str) -> int:
+    dial = 50
+    zeros = 0
+    with open(path, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            dir_, num = line[0], int(line[1:])
+            step = -num if dir_ == "L" else num
+            if step < 0:
+                for _ in range(abs(step)):
+                    dial -= 1
+                    zeros += (dial == 0)
+            else
+                for _ in range(step):
+                    dial += 1
+                    zeros += (dial == 0)
+    return zeros
+```
